@@ -14,25 +14,29 @@ const UserSchema = new Schema(
       require: 'You must provide your email!',
       match: [/.+@.+\..+/, 'Please enter a valid e-mail address!'],
     },
-    thoughts: [
-        {
-            ref: 'Thought'
-        }
-    ],
-    friends: [
-        {
-            ref: 'User'
-        }
-    ],
+    // thoughts: [
+    //     {
+    //         // ref: 'Thought'
+    //     }
+    // ],
+    // friends: [
+    //     {
+    //         // ref: 'User'
+    //     }
+    // ],
   },
-  {
-    toJSON: {
-      virtuals: true,
-    },
-    id: false,
-  }
+//   {
+//     toJSON: {
+//       virtuals: true,
+//     },
+//     id: false,
+//   }
 );
 
 UserSchema.virtual('friendCount').get(function () {
   return this.friends.length;
 });
+
+const User = model('User', UserSchema);
+
+module.exports = User;
