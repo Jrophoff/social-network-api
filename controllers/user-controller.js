@@ -5,6 +5,7 @@ const userController = {
   getAllUser(req, res) {
     User.find({})
       // sorts in DESC order by the id
+      .select('-__v')
       .sort({ _id: -1 })
       .then((dbUserData) => res.json(dbUserData))
       .catch((err) => {
@@ -41,7 +42,7 @@ const userController = {
       .then((dbUserData) => res.json(dbUserData))
       .catch((err) => {
         console.log(err);
-        res.status(400).json(err)
+        res.status(400).json(err);
       });
   },
 
@@ -62,18 +63,20 @@ const userController = {
   },
 
   // add friend
-  addFriend({params}, res) {
-    User.findOneAndUpdate({_id: params.id}, {$set: {friends: params.friendId}} )
-    .then((dbUserData) => {
-      if (!dbUserData) {
-        res.status(404).json({ message: 'No user found with this id!' });
-        return;
-      }
-      res.json(dbUserData);
-    })
-    .catch((err) => res.status(400).json(err));
+  addFriend({ params }, res) {
+    User.findOneAndUpdate(
+      { _id: params.id },
+      { $set: { friends: params.friendId } }
+    )
+      .then((dbUserData) => {
+        if (!dbUserData) {
+          res.status(404).json({ message: 'No user found with this id!' });
+          return;
+        }
+        res.json(dbUserData);
+      })
+      .catch((err) => res.status(400).json(err));
   },
-  
 
   // delete user
   deleteUser({ params }, res) {
@@ -89,16 +92,19 @@ const userController = {
   },
 
   // delete friend
-  removeFriend({params}, res) {
-    User.findOneAndUpdate({_id: params.id}, {$pull: {friends: params.friendId}} )
-    .then((dbUserData) => {
-      if (!dbUserData) {
-        res.status(404).json({ message: 'No user found with this id!' });
-        return;
-      }
-      res.json(dbUserData);
-    })
-    .catch((err) => res.status(400).json(err));
+  removeFriend({ params }, res) {
+    User.findOneAndUpdate(
+      { _id: params.id },
+      { $pull: { friends: params.friendId } }
+    )
+      .then((dbUserData) => {
+        if (!dbUserData) {
+          res.status(404).json({ message: 'No user found with this id!' });
+          return;
+        }
+        res.json(dbUserData);
+      })
+      .catch((err) => res.status(400).json(err));
   },
 };
 
