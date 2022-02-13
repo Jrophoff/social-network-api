@@ -39,6 +39,7 @@ const userController = {
   createUser({ body }, res) {
     console.log(body);
     User.create(body)
+      .select('-__v')
       .then((dbUserData) => res.json(dbUserData))
       .catch((err) => {
         console.log(err);
@@ -52,6 +53,7 @@ const userController = {
       new: true,
       runValidators: true,
     })
+      .select('-__v')
       .then((dbUserData) => {
         if (!dbUserData) {
           res.status(404).json({ message: 'No user found with this id!' });
@@ -68,6 +70,7 @@ const userController = {
       { _id: params.id },
       { $push: { friends: params.friendId } }
     )
+      .select('-__v')
       .then((dbUserData) => {
         if (!dbUserData) {
           res.status(404).json({ message: 'No user found with this id!' });
