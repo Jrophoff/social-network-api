@@ -39,7 +39,6 @@ const userController = {
   createUser({ body }, res) {
     console.log(body);
     User.create(body)
-      .select('-__v')
       .then((dbUserData) => res.json(dbUserData))
       .catch((err) => {
         console.log(err);
